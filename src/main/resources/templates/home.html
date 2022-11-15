@@ -32,7 +32,7 @@
                                     Date : <th:blaock th:text="${#temporals.format(art.uploadDate, 'dd-MM-yyyy HH:mm')}"></th:blaock>
                                 </div>
                                 <div class="progress ">
-                                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="[art.stat]" aria-valuemin="0" aria-valuemax="100">analyze stat : [[${art.stat}]]%</div>
+                                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="[art.status]" aria-valuemin="0" aria-valuemax="100">analyze status : [[${art.status}]]%</div>
                                 </div>
                             </div>
                         </th:block>

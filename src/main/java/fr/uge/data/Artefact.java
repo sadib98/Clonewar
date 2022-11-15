@@ -14,19 +14,17 @@ public class Artefact {
      private String version;
      private String url;
      private LocalDateTime uploadDate;
-     private int stat;
+     private int status;
 
-    public Artefact(int id, String name, String version, String url, LocalDateTime uploadDate, int stat) {
+    /*
+     public Artefact(int id, String name, String version, String url, LocalDateTime uploadDate, int stat) {
         this.id = id;
         this.name = name;
         this.version = version;
         this.url = url;
         this.uploadDate = uploadDate;
         this.stat = stat;
-    }
-
-    public Artefact() {
-    }
+    }*/
 
     private byte[] classContains;
      //private byte[] infoContains;
@@ -48,20 +46,12 @@ public class Artefact {
         this.infoContains = infoContains;
     }**/
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setVesrion(String vesrion) {
-        this.version = vesrion;
-    }
-
-    public String getUrl() {
-        return url;
+    public String getName() {
+        return name;
     }
 
     public void setVersion(String version) {
@@ -76,21 +66,23 @@ public class Artefact {
         this.url = url;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUploadDate() {
+        this.uploadDate = LocalDateTime.now();
+    }
     public LocalDateTime getUploadDate() {
         return uploadDate;
     }
 
-
-    public void setUploadDate(LocalDateTime uploadDate) {
-        this.uploadDate = uploadDate;
+    public int getStatus() {
+        return status;
     }
 
-    public int getStat() {
-        return stat;
-    }
-
-    public void setStat(int stat) {
-        this.stat = stat;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {

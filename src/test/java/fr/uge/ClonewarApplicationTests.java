@@ -34,10 +34,10 @@ class ClonewarApplicationTests {
         File file = new File("/home/bruce/Bureau/M1/java/out/artifacts/demo.jar");
         Artefact artefact = new Artefact();
         artefact.setName(file.getName());
-        artefact.setUploadDate(new Date(0));
+        artefact.setUploadDate();
         artefact.setUrl("http://www.thymeleaf.org");
-        artefact.setVesrion("0.0.1");
-        artefact.setStat(0);
+        artefact.setVersion("0.0.1");
+        artefact.setStatus(0);
         byte[] bytes = Files.readAllBytes(file.toPath());
         artefact.setClassContains(bytes);
 

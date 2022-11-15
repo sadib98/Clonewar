@@ -74,38 +74,11 @@ public class AppliController {
 
     @PostMapping("/upload")
     public String getMessage(@ModelAttribute Artefact  artefact, RedirectAttributes ra) throws Exception{
-        Artefact artefact1 = new Artefact();
-        File file = new File(artefact.getUrl());
-        if(!artefact.getUrl().endsWith(".jar")){
-            //ra.addFlashAttribute("message", "Sorry ! the file must be a .jar");
-            return "redirect:upload";
+        var checkFile = new FileManager(artefact);
+        if(checkFile.isJarFormat() && checkFile.containsPom()){
+            var newArtefact = checkFile.createArtefact();
+            artefactDAO.save(newArtefact);
         }
-        try (JarFile jar = new JarFile(file)) {
-            ZipEntry entry = jar.getEntry("pom.xml");
-            if(entry == null){
-                //ra.addFlashAttribute("message", "Sorry ! your artefact does'nt contein a pom fil");
-                return "redirect:upload";
-            }
-            if (entry != null) {
-                try (InputStream in = jar.getInputStream(entry)) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        if (line.startsWith("    <name>") && line.endsWith("</name>")) {
-                            artefact1.setName(line.substring(10,line.length()-7));
-                        }
-                        if (line.startsWith("    <version>") && line.endsWith("</version>")) {
-                            artefact1.setVersion(line.substring(13,line.length()-10));
-                        }
-                    }
-                }
-            }
-        }
-        artefact1.setUploadDate(LocalDateTime.now());
-        artefact1.setUrl("http://www.thymeleaf.org");
-        artefact1.setStat(20);
-        artefactDAO.save(artefact1);
-        //ra.addFlashAttribute("message", "votre fichier a été ajouté avec succès");
         return "redirect:upload";
     }
 }
