@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Clone-war Application</title>
+  <link rel="stylesheet " type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+    <div class="container text-center p-2 text-dark bg-warning">
+      <div class=" bg-secondary text-white">
+        <h2>Annalyse de l'artefact [[${artefact}]]</h2>
+      </div>
+    </div>
+    <div class="container p-2 bg-warning">
+            <div class="row two-column-summary m-1 bg-success">
+                <div class="col-1 w-50">
+                        Artefacts clones
+                </div>
+                <div class="col-2 w-50 text-end">
+                    pourcentage cloné
+                </div>
+            </div>
+            <th:block th:each="e :  ${dict}">
+                <div class="row  m-1  bg-primary"  >
+                     <div class="col-1 w-50">
+                             [[${e.key}]]
+                     </div>
+                    <div class="col-2 w-50 bg-primary text-end">
+                             [[${e.value}]]%
+                    </div>
+                </div>
+            </th:block>
+    </div>
+</body>
+</html>

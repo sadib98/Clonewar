@@ -1,50 +1,40 @@
 package fr.uge.data;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Artefact {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @Column(nullable = true)
+    @Column()
     private String name;
      private String version;
      private String url;
      private LocalDateTime uploadDate;
      private int status;
 
-    /*
-     public Artefact(int id, String name, String version, String url, LocalDateTime uploadDate, int stat) {
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        this.url = url;
-        this.uploadDate = uploadDate;
-        this.stat = stat;
-    }*/
+     private String path;
 
-    private byte[] classContains;
-     //private byte[] infoContains;
-
-    public byte[] getClassContains() {
-        return classContains;
+    public String getPath() {
+        return this.path;
     }
 
-    public void setClassContains(byte[] classContains) {
-        this.classContains = classContains;
+    public void setPath(final String path) {
+        this.path = path;
     }
 
-    /**
-    public byte[] getInfoContains() {
-        return infoContains;
-    }
+   // @OneToMany(targetEntity = GroupInst.class)
+     //private List<GroupInst> groupInstList;
 
-    public void setInfoContains(byte[] infoContains) {
-        this.infoContains = infoContains;
-    }**/
+    //public List<GroupInst> getGroupInstList() {
+      //  return this.groupInstList;
+   // }
+
+   // public void setGroupInstList(final List<GroupInst> groupInstList) {
+       // this.groupInstList = groupInstList;
+
 
     public void setName(String name) {
         this.name = name;
@@ -87,5 +77,12 @@ public class Artefact {
 
     public int getId() {
         return id;
+    }
+
+    public Artefact() {
+    }
+
+    public Artefact(final int id) {
+        this.id = id;
     }
 }

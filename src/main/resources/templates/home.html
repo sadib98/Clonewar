@@ -17,10 +17,10 @@
                                         <img th:src="@{/jar_icone.jpeg}"  width="60"/>
                                     </div>
                                 <div>
-                                    <a th:href="@{/select}"> analyser </a>
+                                    <a th:href="@{'/select?id=' + ${art.id}}" th:method="pos"> analyser </a>
                                 </div>
                                     <div>
-                                         name : [[${art.name}]]
+                                         name : [[${art.name}]]-[[${art.id}]]
                                     </div>
                                 <div>
                                     version : [[${art.version}]]
@@ -30,6 +30,9 @@
                                 </div>
                                 <div>
                                     Date : <th:blaock th:text="${#temporals.format(art.uploadDate, 'dd-MM-yyyy HH:mm')}"></th:blaock>
+                                </div>
+                                <div>
+                                    <a th:href="@{'/suppr?id=' + ${art.id}}" th:method="pos"> delete </a>
                                 </div>
                                 <div class="progress ">
                                     <div id="dynamic" class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width:75%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">analyze status : [[${art.status}]]%</div>
