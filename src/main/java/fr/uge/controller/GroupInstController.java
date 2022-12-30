@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class GroupInstController {
@@ -49,10 +47,11 @@ public class GroupInstController {
         boolean nbClone = false;
         for (var inst : listInst){
             if(idInst != inst.getId() && hashInst == inst.getHash() && inst.getIdArt() != idArt && inst.getIdArt() == idArtclone){
-                nbClone = true;
+                //nbClone = true;
                 var art = artefactDAO.findById(idArtclone);
                 if(art.isPresent()) {
                     fileClone.add(stringSplit(art.get().getName()));
+                    return true;
                 }
             }
         }
@@ -95,23 +94,23 @@ public class GroupInstController {
 
     @GetMapping("/select")
     public String analyse(@Param("id") int id,Model model) throws Exception {
+        DecimalFormat f = new DecimalFormat();
+        f.setMaximumFractionDigits(2);
         uploadGroupInstr(id);
         List<GroupInst> list = groupInstDAO.findAll();
         List<String> listInst = new ArrayList<>();
         var ListeArt = artefactDAO.findAll();
         HashMap<String, String> map = new HashMap<>();
-        DecimalFormat f = new DecimalFormat();
-        f.setMaximumFractionDigits(2);
         for(var a : ListeArt){
             if(a.getId() != id){
                 var persent = clonePersent(id, a.getId(), list);
-                map.put(a.getName()+"-"+a.getId(), f.format(persent));
+                map.put(a.getName()+", version "+a.getVersion()+",  Id  =  "+a.getId(),  f.format(persent));
             }
         }
         model.addAttribute("dict", map);
         var artefact = artefactDAO.findById(id);
         if(artefact.isPresent()){
-            model.addAttribute("artefact", artefact.get().getName()+"-"+artefact.get().getId());
+            model.addAttribute("artefact", artefact.get());
         }
         return "AnalysePage";
     }

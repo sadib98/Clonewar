@@ -8,24 +8,42 @@
 <body>
     <div class="container text-center p-2 text-dark bg-warning">
       <div class=" bg-secondary text-white">
-        <h2>Annalyse de l'artefact [[${artefact}]]</h2>
+        <h2>Page d'analyse</h2>
       </div>
+        <div class="row m-1 border border-success text-center text-bg-primary">
+            <div>
+                <h4>Informations de l'artefact analysé </h4>
+            </div>
+            <div >
+                Nom de l'artefact : [[${artefact.name}]]
+            </div>
+            <div >
+                Version : [[${artefact.version}]]
+            </div>
+            <div>
+                Date d'ajout : <th:blaock th:text="${#temporals.format(artefact.uploadDate, 'dd-MM-yyyy HH:mm')}"></th:blaock>
+            </div>
+            <h5>Barre de progression et spinner</h5>
+            <div class="progress mb-3" style="height: 5px">
+                <div class="progress-bar w-25 bg-warning" role="progressbar" aria-valuenow="75" aria-valuemin="75" aria-valuemax="100"></div>
+            </div>
+         </div>
     </div>
     <div class="container p-2 bg-warning">
             <div class="row two-column-summary m-1 bg-success">
-                <div class="col-1 w-50">
+                <div class="col-1 w-50 text-light">
                         Artefacts clones
                 </div>
-                <div class="col-2 w-50 text-end">
+                <div class="col-2 w-50 text-end text-light">
                     pourcentage cloné
                 </div>
             </div>
             <th:block th:each="e :  ${dict}">
                 <div class="row  m-1  bg-primary"  >
-                     <div class="col-1 w-50">
+                     <div class="col-1 w-50 bg-danger text-light">
                              [[${e.key}]]
                      </div>
-                    <div class="col-2 w-50 bg-primary text-end">
+                    <div class="col-2 w-50 bg-primary bg-gradient text-light text-end">
                              [[${e.value}]]%
                     </div>
                 </div>

@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
 
 public class FileManager {
   private final Artefact fileToCheck;
@@ -41,19 +42,26 @@ public class FileManager {
 
   private Artefact createArtefact(BufferedReader reader, String path) throws IOException {
     var newArtefact = new Artefact();
+    var take = true;
+    Pattern pattern1 = Pattern.compile("\\s*<artifactId>[A-Za-z0-9._-]+\\</artifactId>");
+    Pattern pattern2 = Pattern.compile("\\s*<groupId>[A-Za-z0-9._-]+\\</groupId>");
+    Pattern pattern3 = Pattern.compile("\\s*<version>[A-Za-z0-9._-]+\\</version>");
     String line = null;
     while ((line = reader.readLine()) != null) {
-      if ((line.startsWith("    <artifactId>") || line.startsWith("  <artifactId>")) && line.endsWith("</artifactId>")) {
-        newArtefact.setName(line.substring(16, line.length() - 13));
+      if (pattern1.matcher(line).matches() && take == true) {
+        newArtefact.setName(line.split(">")[1].split("<")[0]);
       }
-      if ((line.startsWith("    <version>") || line.startsWith("  <version>")) && line.endsWith("</version>")) {
-        newArtefact.setVersion(line.substring(13, line.length() - 10));
+      if (pattern2.matcher(line).matches()  && take == true) {
+        newArtefact.setUrl(reverse(line.split(">")[1].split("<")[0]+".http://www"));
       }
-      if ((line.startsWith("    <groupId>") || line.startsWith("  <groupId>")) && line.endsWith("</groupId>")) {
-        newArtefact.setUrl(reverse(line.substring(13, line.length() - 10)+".http://www"));
-        newArtefact.setPath(path);
+      if (pattern3.matcher(line).matches()  && take == true) {
+        newArtefact.setVersion(line.split(">")[1].split("<")[0]);
+      }
+      if(line.endsWith("<dependencies>") || line.endsWith("<plugin>")){
+        take = false;
       }
     }
+    newArtefact.setPath(path);
     newArtefact.setUploadDate();
     newArtefact.setStatus(75);
     return newArtefact;

@@ -4,7 +4,6 @@ import fr.uge.data.GroupInst;
 import org.springframework.asm.*;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.constant.ClassDesc;
 import java.lang.constant.MethodTypeDesc;
 import java.lang.reflect.Modifier;
@@ -68,93 +67,44 @@ public class MyClassVisitor extends ClassVisitor{
         }
         return hash;
     }
+
+    public boolean stockeInstr(String text, int visitedInst, int instrNumber){
+        builder.append(text).append('\n');
+        if(visitedInst == fenetre){
+            System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ (instrNumber-1)+"\n");
+            groupInstList.add(new GroupInst(idArt, hash(builder.toString()), (instrNumber-1),fileName));
+            builder.delete(0,builder.length());
+            return true;
+        }
+        return false;
+    }
     
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        try{
-            writer = new FileWriter("abstract.txt", true);
-            String text = "class " + modifier(access) + " " + name + " " + superName + " " + (interfaces != null ? Arrays.toString(interfaces) : "");
-            writer.write(text,0,text.length());
-            writer.append('\n');
-            builder.append(text).append('\n');
-            visitedInst++;
-            instrNumber++;
-            if(visitedInst == fenetre){
-                System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                visitedInst = 0;
-                groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                builder.delete(0,builder.length());
-            }
-        }catch(IOException ex) {
-
-        }finally{
-            if(writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+        String text = "class " + modifier(access) + " " + name + " " + superName + " " + (interfaces != null ? Arrays.toString(interfaces) : "");
+        visitedInst++;
+        instrNumber++;
+        var stoked = stockeInstr(text, visitedInst, instrNumber);
+        visitedInst = stoked? 0 : visitedInst;
     }
 
     @Override
     public RecordComponentVisitor visitRecordComponent(String name, String descriptor, String signature) {
-        try{
-            writer = new FileWriter("abstract.txt", true);
-            String text = "  component " + name + " " + ClassDesc.ofDescriptor(descriptor).displayName() ;
-            writer.write(text,0,text.length());
-            writer.append('\n');
-            builder.append(text).append('\n');
-            instrNumber++;
-            visitedInst++;
-            if(visitedInst == fenetre){
-                System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                visitedInst = 0;
-                groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                builder.delete(0,builder.length());
-            }
-        }catch(IOException ex) {
-
-        }finally{
-            if(writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+        String text = "  component " + name + " " + ClassDesc.ofDescriptor(descriptor).displayName() ;
+        visitedInst++;
+        instrNumber++;
+        var stoked = stockeInstr(text, visitedInst, instrNumber);
+        visitedInst = stoked? 0 : visitedInst;
         return null;
     }
 
     @Override
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-        try{
-            writer = new FileWriter("abstract.txt", true);
-            String text = "  " + modifier(access) +  " " + ClassDesc.ofDescriptor(descriptor).displayName() + " " + signature;
-            writer.write(text,0,text.length());
-            writer.append('\n');
-            builder.append(text).append('\n');
-            instrNumber++;
-            visitedInst++;
-            if(visitedInst == fenetre){
-                System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                visitedInst = 0;
-                groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                builder.delete(0,builder.length());
-            }
-        }catch(IOException ex) {
-
-        }finally{
-            if(writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+        String text = "  " + modifier(access) +  " " + ClassDesc.ofDescriptor(descriptor).displayName() + " " + signature;
+        visitedInst++;
+        instrNumber++;
+        var stoked = stockeInstr(text, visitedInst, instrNumber);
+        visitedInst = stoked? 0 : visitedInst;
         return null;
     }
 
@@ -163,72 +113,25 @@ public class MyClassVisitor extends ClassVisitor{
         return new MethodVisitor(Opcodes.ASM9) {
             @Override
             public void visitInsn(int opcode) {
-                try{
-                    String tex1 = "  " + modifier(access) +  " " + MethodTypeDesc.ofDescriptor(descriptor).displayDescriptor() + " " + signature;
-                    writer = new FileWriter("abstract.txt", true);
-                    writer.write(tex1,0,tex1.length());
-                    writer.append('\n');
-                    builder.append(tex1).append('\n');
-                    instrNumber++;
-                    visitedInst++;
-                    if(visitedInst == fenetre){
-                        System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                        visitedInst = 0;
-                        groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                        builder.delete(0,builder.length());
-                    }
-                    String text = "    " + opcode;
-                    writer.write(text,0,text.length());
-                    writer.append('\n');
-                    builder.append(text).append('\n');
-                    instrNumber++;
-                    visitedInst++;
-                    if(visitedInst == fenetre){
-                        System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                        visitedInst = 0;
-                        groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                        builder.delete(0,builder.length());
-                    }
-                }catch(IOException ex) {
-
-                }finally{
-                    if(writer != null) {
-                        try {
-                            writer.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
+                String tex1 = "  " + modifier(access) +  " " + MethodTypeDesc.ofDescriptor(descriptor).displayDescriptor() + " " + signature;
+                visitedInst++;
+                instrNumber++;
+                var stoked = stockeInstr(tex1, visitedInst, instrNumber);
+                visitedInst = stoked? 0 : visitedInst;
+                String text = "    " + opcode;
+                visitedInst++;
+                instrNumber++;
+                stoked = stockeInstr(text, visitedInst, instrNumber);
+                visitedInst = stoked? 0 : visitedInst;
             }
 
             @Override
             public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                try{
-                    writer = new FileWriter("abstract.txt", true);
-                    String text = "    " + opcode + " " + name + descriptor;
-                    writer.write(text,0,text.length());
-                    writer.append('\n');
-                    builder.append(text).append('\n');
-                    instrNumber++;
-                    visitedInst++;
-                    if(visitedInst == fenetre){
-                        System.out.println(builder.toString() +" : has = " +hash(builder.toString())+"  bigins at : "+ instrNumber+"\n");
-                        visitedInst = 0;
-                        groupInstList.add(new GroupInst(idArt, hash(builder.toString()), instrNumber,fileName));
-                        builder.delete(0,builder.length());
-                    }
-                }catch(IOException ex) {
-
-                }finally{
-                    if(writer != null) {
-                        try {
-                            writer.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
+                String text = "    " + opcode + " " + name + descriptor;
+                visitedInst++;
+                instrNumber++;
+                var stoked = stockeInstr(text, visitedInst, instrNumber);
+                visitedInst = stoked? 0 : visitedInst;
             }
         };
     }

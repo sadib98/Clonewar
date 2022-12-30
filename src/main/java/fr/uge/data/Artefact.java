@@ -2,6 +2,7 @@ package fr.uge.data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Artefact {
@@ -25,15 +26,16 @@ public class Artefact {
         this.path = path;
     }
 
-   // @OneToMany(targetEntity = GroupInst.class)
-     //private List<GroupInst> groupInstList;
+    @OneToMany(targetEntity = GroupInst.class)
+     private List<GroupInst> groupInstList;
 
-    //public List<GroupInst> getGroupInstList() {
-      //  return this.groupInstList;
-   // }
+    public List<GroupInst> getGroupInstList() {
+       return this.groupInstList;
+   }
 
-   // public void setGroupInstList(final List<GroupInst> groupInstList) {
-       // this.groupInstList = groupInstList;
+   public void setGroupInstList(final List<GroupInst> groupInstList) {
+       this.groupInstList = groupInstList;
+   }
 
 
     public void setName(String name) {

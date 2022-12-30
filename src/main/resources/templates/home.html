@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
          <meta charset="UTF-8">
-         <title>Clone-war Application</title>
+         <title>Application  Clonewar</title>
         <link rel="stylesheet " type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
         <div class="container text-center p-2 text-dark bg-success-5">
             <div class="p-3 mb-2 bg-secondary text-white">
-                <h1>Clone-war Application</h1>
+                <h1>Application  Clonewar</h1>
             </div>
                 <div class="row  m-1" >
                         <th:block th:each="art  :  ${listArtfacts}">
@@ -20,19 +20,19 @@
                                     <a th:href="@{'/select?id=' + ${art.id}}" th:method="pos"> analyser </a>
                                 </div>
                                     <div>
-                                         name : [[${art.name}]]-[[${art.id}]]
+                                         Nom : [[${art.name}]]
                                     </div>
                                 <div>
-                                    version : [[${art.version}]]
+                                    Version : [[${art.version}]]
                                 </div>
                                 <div>
-                                    url : [[${art.url}]]
+                                    Url : [[${art.url}]]
                                 </div>
                                 <div>
                                     Date : <th:blaock th:text="${#temporals.format(art.uploadDate, 'dd-MM-yyyy HH:mm')}"></th:blaock>
                                 </div>
                                 <div>
-                                    <a th:href="@{'/suppr?id=' + ${art.id}}" th:method="pos"> delete </a>
+                                    <a th:href="@{'/suppr?id=' + ${art.id}}" th:method="pos"> supprimer </a>
                                 </div>
                                 <div class="progress ">
                                     <div id="dynamic" class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width:75%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">analyze status : [[${art.status}]]%</div>
@@ -42,17 +42,17 @@
                 </div>
                 <form th:action="@{/upload}" method="post" th:object="${artefact}" >
                         <div class="border rounded bg-success">
-                                <h4>Add artefact </h4>
+                                <h4>Ajouter un artefact </h4>
                                 <p>
-                                    <input type="text" placeholder="Enter your jar path" th:field="*{url}">
+                                    <input type="text" placeholder="/home/user/Download/artefact" th:field="*{url}">
                                 </p>
                                 <p>
-                                    <input type="submit" value="add" class="btn btn-primary">
+                                    <input type="submit" value="ajouter" class="btn btn-primary">
                                 </p>
                         </div>
                 </form>
             <div th:id="footer-block" class="p-3 mb-2 bg-secondary text-white">
-                CloneWar &copy; 2022 - By AHAMMAD Sadib, POMBO Bruce
+                CloneWar &copy; 2022 - par AHAMMAD Sadib, POMBO Bruce
             </div>
         </div>
 </body>
