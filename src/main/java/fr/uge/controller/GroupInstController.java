@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
-@Controller
+@RestController
+@RequestMapping("/api/analyse")
 public class GroupInstController {
 
 
@@ -47,7 +47,6 @@ public class GroupInstController {
         boolean nbClone = false;
         for (var inst : listInst){
             if(idInst != inst.getId() && hashInst == inst.getHash() && inst.getIdArt() != idArt && inst.getIdArt() == idArtclone){
-                //nbClone = true;
                 var art = artefactDAO.findById(idArtclone);
                 if(art.isPresent()) {
                     fileClone.add(stringSplit(art.get().getName()));
@@ -58,8 +57,8 @@ public class GroupInstController {
         return nbClone;
     }
 
-    @PostMapping("/select")
-    public String uploadGroupInstr(@Param("id") int id) throws Exception{
+
+    public String uploadGroupInstr(int id) throws Exception{
         var artefact = new Artefact();
         var artefactList = artefactDAO.findAll();
         for(var art : artefactList){
@@ -73,13 +72,13 @@ public class GroupInstController {
                 }
             }
         }
-        var checkFile = new FileManager(artefact);
+        var checkFile = new FileManager();
         var b = checkFile.getByteCode(artefact.getPath(), id);
         if(b == null){
-            return "redirect:upload";
+            return "";
         }
         groupInstDAO.saveAll(b.groupInstList);
-        return " ";
+        return "";
     }
 
     public double clonePersent(int id, int idArtClone, List<GroupInst> listInst){
@@ -92,26 +91,23 @@ public class GroupInstController {
         return ((persent)*100)/listInst.stream().filter(e->e.getIdArt() == id).toList().size();
     }
 
-    @GetMapping("/select")
-    public String analyse(@Param("id") int id,Model model) throws Exception {
+    @PostMapping("/result")
+    public Map<String, String> analyse(@RequestBody String id) throws Exception {
+        var analyseID = Integer.parseInt(id);
+        System.out.println("Analysing : " + analyseID);
+
         DecimalFormat f = new DecimalFormat();
         f.setMaximumFractionDigits(2);
-        uploadGroupInstr(id);
+        uploadGroupInstr(analyseID);
         List<GroupInst> list = groupInstDAO.findAll();
-        List<String> listInst = new ArrayList<>();
         var ListeArt = artefactDAO.findAll();
         HashMap<String, String> map = new HashMap<>();
         for(var a : ListeArt){
-            if(a.getId() != id){
-                var persent = clonePersent(id, a.getId(), list);
+            if(a.getId() != analyseID){
+                var persent = clonePersent(analyseID, a.getId(), list);
                 map.put(a.getName()+", version "+a.getVersion()+",  Id  =  "+a.getId(),  f.format(persent));
             }
         }
-        model.addAttribute("dict", map);
-        var artefact = artefactDAO.findById(id);
-        if(artefact.isPresent()){
-            model.addAttribute("artefact", artefact.get());
-        }
-        return "AnalysePage";
+        return map;
     }
 }

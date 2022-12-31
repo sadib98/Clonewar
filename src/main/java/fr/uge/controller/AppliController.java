@@ -4,19 +4,14 @@ import fr.uge.data.Artefact;
 import fr.uge.service.ArtefactDAO;
 import fr.uge.service.GroupInstDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
-@EnableTransactionManagement
-@Controller
+@RestController
+@RequestMapping("/api/files")
 public class AppliController {
 
     @Autowired
@@ -33,27 +28,24 @@ public class AppliController {
         this.groupInstDAO = groupInstDAO;
     }
 
-    @GetMapping("/upload")
-    public String viewHomePage(Model model){
-        List<Artefact> listArtfacts = artefactDAO.findAll();
-        model.addAttribute("listArtfacts", listArtfacts);
-        model.addAttribute("artefact", new Artefact());
-        return "home";
+    @GetMapping("/get")
+    public List<Artefact> getArtefacts(){
+        return artefactDAO.findAll();
     }
 
     @PostMapping("/upload")
-    public String uploadArtefact(@ModelAttribute Artefact  artefact, RedirectAttributes ra) throws Exception{
-        var checkFile = new FileManager(artefact);
-        var art = checkFile.makeArtefact(artefact.getUrl());
+    public void uploadArtefact(@RequestBody String path) throws Exception{
+        Objects.requireNonNull(path);
+        var filemanager = new FileManager();
+        var art = filemanager.makeArtefact(path);
         if(art != null){
             artefactDAO.save(art);
-            //groupInstDAO.saveAll(b.groupInstList);
+            System.out.println("File uploaded !");
         }
-        return "redirect:upload";
+        System.out.println("Upload Error !!");
     }
 
-    @PostMapping()
-    public void deleteArtefact(@Param("id") int id){
+    public void deleteArtefact(int id){
         artefactDAO.deleteById(id);
         var list = groupInstDAO.findAll();
         for (var e : list){
@@ -63,9 +55,10 @@ public class AppliController {
         }
     }
 
-    @GetMapping("/suppr")
-    public String getPage(@Param("id") int id){
-        deleteArtefact(id);
-        return "redirect:upload";
+
+    @PostMapping("/delete")
+    public void getPage(@RequestBody String id){
+        deleteArtefact(Integer.parseInt(id));
+        System.out.println("File deleted: " + id);
     }
 }

@@ -15,14 +15,15 @@ import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 public class FileManager {
-  private final Artefact fileToCheck;
+  //private final Artefact fileToCheck;
 
+  /*
   public FileManager(Artefact newFile){
     if(newFile == null){
       throw new IllegalArgumentException("file == null");
     }
     this.fileToCheck = newFile;
-  }
+  }*/
 
 
   // This function correctes a string represented an artefact  groupeId in an order readable by humam

@@ -4,12 +4,13 @@
   "description": "Clonewar Front with VueJS 3.2.37",
   "main": "main.js",
   "scripts": {
-    "serve": "webpack-dev-server --mode development"
+    "serve": "webpack-dev-server --mode development",
+    "build": "webpack --config webpack.config.js"
   },
   "author": "AHAMMAD Sadib, POMBO Bruce",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.2.2",
+    "bootstrap": "^5.2.1",
     "vue": "^3.2.37"
   },
   "devDependencies": {
