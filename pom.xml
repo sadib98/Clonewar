@@ -21,10 +21,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,11 +47,6 @@
 
         <dependency>
             <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>5.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
             <artifactId>webjars-locator-core</artifactId>
         </dependency>
 
@@ -71,6 +62,55 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Run npm run build so the dist folder contains latest distributable code -->
+            <plugin>
+                <artifactId>Clonewar</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <groupId>fr.uge</groupId>
+                <executions>
+                    <execution>
+                        <id>npm build the vue app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>src/front</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy the vuejs dist folder into Spring Boot target static folder.
+                Make sure npm run build has been executed-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>Copy my VueJS app into my Spring Boot target static folder</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/front/dist</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
