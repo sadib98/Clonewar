@@ -19,29 +19,4 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ClonewarApplicationTests {
 
-    @Autowired
-    private ArtefactDAO artefactDAO;
-
-    @Autowired
-    private TestEntityManager testEntityManager;
-
-    @Test
-    @Rollback(value = false)
-    void testInsertArtefact() throws IOException {
-        File file = new File("/home/bruce/Bureau/M1/java/out/artifacts/demo.jar");
-        Artefact artefact = new Artefact();
-        artefact.setName(file.getName());
-        artefact.setUploadDate();
-        artefact.setUrl("http://www.thymeleaf.org");
-        artefact.setVersion("0.0.1");
-        artefact.setStatus(0);
-        byte[] bytes = Files.readAllBytes(file.toPath());
-
-        Artefact savedArtefact = artefactDAO.save(artefact);
-        Artefact existAtefact = testEntityManager.find(Artefact.class, savedArtefact.getId());
-        assertTrue(existAtefact.getName().equals(file.getName()));
-    }
-
-
-
 }

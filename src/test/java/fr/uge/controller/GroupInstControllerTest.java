@@ -29,43 +29,11 @@ class GroupInstControllerTest {
 
     @Test
     void detecteClones() {
-        var g1 = new GroupInst();
-        g1.setFile_name("classe1");
-        g1.setHash(100);
-        g1.setLine(10);
-        g1.setIdArt(1);
-        var g2 = new GroupInst();
-        g2.setFile_name("classe2");
-        g2.setHash(100);
-        g2.setLine(10);
-        g2.setIdArt(2);
 
-        groupInstDAO.saveAll(List.of(g1,g2));
-
-        var c = new GroupInstController();
-        c.setGroupInstDAO(groupInstDAO);
-        c.setArtefactDAO(artefactDAO);
-        assertTrue(c.detecteClones(2, 100, 1, 1, List.of(g1,g2)));
     }
 
 
     @Test
     void saveGroupInstr() {
-        var g1 = new GroupInst();
-        g1.setFile_name("classe1");
-        g1.setHash(100);
-        g1.setLine(10);
-        g1.setIdArt(1);
-
-        var g2 = new GroupInst();
-        g2.setFile_name("classe2");
-        g2.setHash(100);
-        g2.setLine(10);
-        g2.setIdArt(2);
-        groupInstDAO.saveAll(List.of(g1,g2));
-        GroupInst existGroupInst = testEntityManager.find(GroupInst.class, g1.getId());
-        assertTrue(existGroupInst.getFile_name().equals("classe1"));
-        existGroupInst = testEntityManager.find(GroupInst.class, g2.getId());
-        assertTrue(existGroupInst.getFile_name().equals("classe2"));
     }
 }

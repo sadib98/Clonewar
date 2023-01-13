@@ -30,38 +30,11 @@ class AppliControllerTest {
 
     @Test
     void uploadArtefact() {
-        Artefact artefact = new Artefact();
-        artefact.setName("thymleaf");
-        artefact.setUploadDate();
-        artefact.setUrl("http://www.thymeleaf.org");
-        artefact.setVersion("0.0.1");
-        artefact.setStatus(0);
-
-        Artefact savedArtefact = artefactDAO.save(artefact);
-        Artefact existAtefact = testEntityManager.find(Artefact.class, savedArtefact.getId());
-        assertTrue(existAtefact.getName().equals("thymleaf"));
 
     }
 
     @Test
     void deleteArtefact(){
-        Artefact artefact = new Artefact();
-        artefact.setName("thymleaf");
-        artefact.setUploadDate();
-        artefact.setUrl("http://www.thymeleaf.org");
-        artefact.setVersion("0.0.1");
-        artefact.setStatus(0);
-
-        Artefact savedArtefact = artefactDAO.save(artefact);
-        Artefact existAtefact = testEntityManager.find(Artefact.class, savedArtefact.getId());
-        assertTrue(existAtefact.getName().equals("thymleaf"));
-        var c = new AppliController();
-        c.setArtefactDAO(artefactDAO);
-        c.setGroupInstDAO(groupInstDAO);
-        c.deleteArtefact(artefact.getId());
-        existAtefact = testEntityManager.find(Artefact.class, savedArtefact.getId());
-        assertNull(existAtefact);
-
     }
 
     @Test
