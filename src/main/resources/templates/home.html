@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+         <meta charset="UTF-8">
+         <title>Application  Clonewar</title>
+        <link rel="stylesheet " type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+        <div class="container text-center p-2 text-dark bg-success-5">
+            <div class="p-3 mb-2 bg-secondary text-white">
+                <h1>Application  Clonewar</h1>
+            </div>
+                <div class="row  m-1" >
+                        <th:block th:each="art  :  ${listArtfacts}">
+                            <div class="col border border-primary">
+                                    <div >
+                                        <img th:src="@{/jar_icone.jpeg}"  width="60"/>
+                                    </div>
+                                <div>
+                                    <a th:href="@{'/select?id=' + ${art.id}}" th:method="pos"> analyser </a>
+                                </div>
+                                    <div>
+                                         Nom : [[${art.name}]]
+                                    </div>
+                                <div>
+                                    Version : [[${art.version}]]
+                                </div>
+                                <div>
+                                    Url : [[${art.url}]]
+                                </div>
+                                <div>
+                                    Date : <th:blaock th:text="${#temporals.format(art.uploadDate, 'dd-MM-yyyy HH:mm')}"></th:blaock>
+                                </div>
+                                <div>
+                                    <a th:href="@{'/suppr?id=' + ${art.id}}" th:method="pos"> supprimer </a>
+                                </div>
+                                <div class="progress ">
+                                    <div id="dynamic" class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width:75%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">analyze status : [[${art.status}]]%</div>
+                                </div>
+                            </div>
+                        </th:block>
+                </div>
+                <form th:action="@{/upload}" method="post" th:object="${artefact}" >
+                        <div class="border rounded bg-success">
+                                <h4>Ajouter un artefact </h4>
+                                <p>
+                                    <input type="text" placeholder="/home/user/Download/artefact" th:field="*{url}">
+                                </p>
+                                <p>
+                                    <input type="submit" value="ajouter" class="btn btn-primary">
+                                </p>
+                        </div>
+                </form>
+            <div th:id="footer-block" class="p-3 mb-2 bg-secondary text-white">
+                CloneWar &copy; 2022 - par AHAMMAD Sadib, POMBO Bruce
+            </div>
+        </div>
+</body>
+<script
+        src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.js">
+</script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js">
+</script>
+
+<script type="text/babel">
+    var app = new Vue({
+        el: '#container'
+    });
+</script>
+</html>
